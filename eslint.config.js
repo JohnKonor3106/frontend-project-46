@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import pluginJs from '@eslint/js';
 import importPlugin from 'eslint-plugin-import';
+import someConfig from "some-other-config-you-use";
+import eslintConfigPrettier from "eslint-config-prettier";
 
 // mimic CommonJS variables -- not needed if using CommonJS
 const __filename = fileURLToPath(import.meta.url);
@@ -54,4 +56,6 @@ export default [
       'import/no-extraneous-dependencies': 'off',
     },
   },
+    someConfig,
+    eslintConfigPrettier
 ];
