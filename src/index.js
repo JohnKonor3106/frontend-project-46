@@ -4,16 +4,22 @@ import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
 import parse from './parse.js';
 
-const getPath = (path) => {
-  const pathFile = resolve(cwd(), path);
-  const file = readFileSync(pathFile, 'utf-8');
+const readFile = (fileName) => (readFileSync(fileName, 'utf-8'))
 
-  return file;
+const getPath = (path) => {
+  const pathFile = resolve(cwd(), '__fixtures__', path);
+  // const file = readFileSync(pathFile, 'utf-8');
+  
+
+  return readFile(pathFile);
 };
 
 const genDiff = (data1, data2) => {
-  const dataParse1 = parse(data1);
-  const dataParse2 = parse(data2);
+  const file1 = getPath(data1)
+  const file2 = getPath(data2)
+
+  const dataParse1 = parse(file1);
+  const dataParse2 = parse(file2);
 
   const keys1 = Object.keys(dataParse1);
   const keys2 = Object.keys(dataParse2);
@@ -23,7 +29,7 @@ const genDiff = (data1, data2) => {
   let value = '{ \n'
   for (const key of keys) {
     if (!Object.hasOwn(dataParse2, key)) { /* если ключа нет во втором объекте, но есть в первом */
-      value +=  `  - ${key + ': ' + dataParse1[key]} \n`   /* result[`-${key}`] = dataParse1[key]; */
+      value +=  `  - ${key + ': ' + dataParse1[key]} \n` 
     } else if (!Object.hasOwn(dataParse1, key)) { /* если ключа нет в первом  объекте, но есть во втором */
       value +=  `  + ${key + ': ' + dataParse2[key]} \n` ;
     } else if (dataParse1[key] !== dataParse2[key]) { /* если ключи есть в обоих объектах, но значения различаются  */
@@ -34,7 +40,7 @@ const genDiff = (data1, data2) => {
     }
   }
 
-  return console.log(value + '}');
+  return value + '}';
 };
 
-export { genDiff, getPath };
+export { genDiff, getPath, readFile };

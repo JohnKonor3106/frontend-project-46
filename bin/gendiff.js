@@ -13,10 +13,8 @@ program
   .argument('<file1path1>')
   .argument('<file1path2>')
   .action((filepath1, filepath2) => {
-    const file1 = utils.getPath(filepath1);
-    const file2 = utils.getPath(filepath2);
-
-    utils.genDiff(file1, file2);
+   
+    utils.genDiff(filepath1, filepath2);
   });
 
 program.parse();
