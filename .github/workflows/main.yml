@@ -1,16 +1,4 @@
-# name: testing 
-# on: push
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#       - uses: actions/setup-node@v3
-#       - run: make test
-#       - run: make lint
-# Name of workflow
 name: Testing
-
 # Trigger the workflow on push or pull request
 on:
   - push
