@@ -24,18 +24,19 @@ const genDiff = (data1, data2) => {
   const keys = _.sortBy(_.union(keys1, keys2));
 
   let value = '{ \n';
-  for (const key of keys) {
-    if (!Object.hasOwn(dataParse2, key)) { /* если ключа нет во втором объекте, но есть в первом */
+
+  keys.forEach((key) => {
+    if (!Object.hasOwn(dataParse2, key)) {
       value += `  - ${`${key}: ${dataParse1[key]}`} \n`;
-    } else if (!Object.hasOwn(dataParse1, key)) { /* если ключа нет в первом  объекте, но есть во втором */
+    } else if (!Object.hasOwn(dataParse1, key)) {
       value += `  + ${`${key}: ${dataParse2[key]}`} \n`;
-    } else if (dataParse1[key] !== dataParse2[key]) { /* если ключи есть в обоих объектах, но значения различаются  */
+    } else if (dataParse1[key] !== dataParse2[key]) {
       value += `  - ${`${key}: ${dataParse1[key]}`} \n`;
       value += `  + ${`${key}: ${dataParse2[key]}`} \n`;
     } else {
       value += `    ${`${key}: ${dataParse1[key]}`} \n`;
     }
-  }
+  });
 
   return `${value}}`;
 };
