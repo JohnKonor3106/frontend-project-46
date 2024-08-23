@@ -1,8 +1,9 @@
-import _ from 'lodash';
 import { cwd } from 'node:process';
 import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
+import getTree from './formatter/bildTree.js';
 import parse from './parses/parse.js';
+import getformat from './formatter/format.js';
 
 const readFile = (fileName) => (readFileSync(fileName, 'utf-8'));
 
@@ -12,7 +13,7 @@ const getPath = (path) => {
   return pathFile;
 };
 
-const genDiff = (data1, data2) => {
+const genDiff = (data1, data2, format = 'stylish') => {
   const path1 = getPath(data1);
   const path2 = getPath(data2);
 
@@ -23,26 +24,8 @@ const genDiff = (data1, data2) => {
     return {};
   }
 
-  const keys1 = Object.keys(dataParse1);
-  const keys2 = Object.keys(dataParse2);
-  const keys = _.sortBy(_.union(keys1, keys2));
-
-  let value = '{ \n';
-
-  keys.forEach((key) => {
-    if (!Object.hasOwn(dataParse2, key)) {
-      value += `  - ${`${key}: ${dataParse1[key]}`} \n`;
-    } else if (!Object.hasOwn(dataParse1, key)) {
-      value += `  + ${`${key}: ${dataParse2[key]}`} \n`;
-    } else if (dataParse1[key] !== dataParse2[key]) {
-      value += `  - ${`${key}: ${dataParse1[key]}`} \n`;
-      value += `  + ${`${key}: ${dataParse2[key]}`} \n`;
-    } else {
-      value += `    ${`${key}: ${dataParse1[key]}`} \n`;
-    }
-  });
-
-  return `${value}}`;
+  const tree = getTree(dataParse1, dataParse2);
+  return getformat(tree, format);
 };
 
 export { genDiff, getPath, readFile };
