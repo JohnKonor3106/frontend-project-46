@@ -67,3 +67,11 @@ test('should incorrect format', () => {
 
   expect(resultDiff).toEqual(trueOutput);
 });
+
+test('should plain format', () => {
+  const file1 = getFixturePath('file1.json');
+  const file2 = getFixturePath('file2.json');
+  const trueOutput = readFile(getFixturePath('result.plain.txt'));
+  const resultDiff = genDiff(file1, file2, 'plain');
+  expect(resultDiff).toEqual(trueOutput);
+});
