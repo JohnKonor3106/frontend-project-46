@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
+import { program } from 'commander';
 import * as utils from '../src/index.js';
-
-const program = new Command();
 
 program
   .name('string-util')
@@ -14,7 +12,7 @@ program
   .argument('<file1path2>')
   .action((filepath1, filepath2, { format }) => {
     const result = utils.genDiff(filepath1, filepath2, format);
-    return console.log(result);
+    console.log(result);
   });
 
-program.parse(process.argv);
+program.parse();
