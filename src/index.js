@@ -1,7 +1,7 @@
 import getTree from './formatter/bildTree.js';
 import parse from './parses/parse.js';
 import getformat from './formatter/format.js';
-import * as utils from '../src/utils.js'
+import * as utils from './utils.js';
 
 const genDiff = (data1, data2, format = 'stylish') => {
   const path1 = utils.getPath(data1);
@@ -17,7 +17,7 @@ const genDiff = (data1, data2, format = 'stylish') => {
   const tree = getTree(dataParse1, dataParse2);
   const result = getformat(tree, format);
 
-  return result
+  return result;
 };
 
 export default genDiff;

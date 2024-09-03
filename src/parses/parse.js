@@ -1,6 +1,6 @@
 import jsYaml from 'js-yaml';
 import { extname } from 'path';
-import * as utils from '../utils.js'
+import * as utils from '../utils.js';
 
 const parse = (data) => {
   const format = extname(data);
