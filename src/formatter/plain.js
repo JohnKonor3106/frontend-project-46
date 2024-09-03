@@ -14,33 +14,22 @@ const iter = (data, parentKey = '') => {
     }
   };
 
-  const text = data.reduce((acc, key) => {
-    let result = acc;
-
+  return data.reduce((acc, key) => {
+    const currentKey = `${parentKey}${key.key}`;
+    
     switch (key.type) {
       case 'added':
-        result
-        += `Property '${parentKey}${key.key}' was added with value: ${isBoolean(key.value)}\n`;
-        break;
+        return `${acc}Property '${currentKey}' was added with value: ${isBoolean(key.value)}\n`;
       case 'deleted':
-        result
-        += `Property '${parentKey}${key.key}' was removed\n`;
-        break;
+        return `${acc}Property '${currentKey}' was removed\n`;
       case 'changed':
-        result
-        += `Property '${parentKey}${key.key}' was updated. From ${isBoolean(key.value1)} to ${isBoolean(key.value2)}\n`;
-        break;
+        return `${acc}Property '${currentKey}' was updated. From ${isBoolean(key.value1)} to ${isBoolean(key.value2)}\n`;
       case 'nested':
-        result += iter(key.children, `${parentKey}${key.key}.`);
-        break;
+        return `${acc}${iter(key.children, `${currentKey}.`)}`;
       default:
-        break;
+        return acc; // No changes for unrecognized types
     }
-
-    return result;
   }, '');
-
-  return text;
 };
 
 const plain = (ast) => iter(ast).trim();
