@@ -1,5 +1,19 @@
 const iter = (data, parentKey = '') => {
-  const isBoolean = (value) => ((typeof value === 'boolean' || value === null) ? value : `'${value}'`);
+  
+  const isBoolean = (value) => {
+    if(value === null){
+      return value
+    }
+    switch(typeof value){
+      case 'string': 
+      return `'${value}'`; 
+      case 'number':
+      case 'boolean': 
+      return value;
+      default:
+      return `[complex value]`;
+    }
+  }
 
   const text = data.reduce((acc, key) => {
     let result = acc;
@@ -7,7 +21,7 @@ const iter = (data, parentKey = '') => {
     switch (key.type) {
       case 'added':
         result
-        += `Property '${parentKey}${key.key}' was added with value: ${typeof key.value === 'object' ? '[complex value]' : isBoolean(key.value)}\n`;
+        += `Property '${parentKey}${key.key}' was added with value: ${isBoolean(key.value)}\n`;
         break;
       case 'deleted':
         result
@@ -15,7 +29,7 @@ const iter = (data, parentKey = '') => {
         break;
       case 'changed':
         result
-        += `Property '${parentKey}${key.key}' was updated. From ${typeof key.value1 === 'object' ? '[complex value]' : isBoolean(key.value1)} to ${isBoolean(key.value2)}\n`;
+        += `Property '${parentKey}${key.key}' was updated. From ${isBoolean(key.value1)} to ${isBoolean(key.value2)}\n`;
         break;
       case 'nested':
         result += iter(key.children, `${parentKey}${key.key}.`);
@@ -32,4 +46,5 @@ const iter = (data, parentKey = '') => {
 
 const plain = (ast) => iter(ast).trim();
 
-export default plain;
+export default plain
+// ((typeof value === 'boolean' || value === null || typeof value === 'number') ? value : `'${value}'`);
