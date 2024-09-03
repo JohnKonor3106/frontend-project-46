@@ -16,7 +16,7 @@ const iter = (data, parentKey = '') => {
 
   return data.reduce((acc, key) => {
     const currentKey = `${parentKey}${key.key}`;
-    
+
     switch (key.type) {
       case 'added':
         return `${acc}Property '${currentKey}' was added with value: ${isBoolean(key.value)}\n`;

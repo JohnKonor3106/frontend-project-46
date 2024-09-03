@@ -11,7 +11,8 @@ const iter = (data, depth) => {
   const brackets = (newDepth, space = 4) => ' '.repeat((newDepth * space - 2) + 2);
 
   const getNestedObject = (obj, newIdent) => {
-    const newObj = Object.entries(obj)
+    const copy = {...obj}
+    const newObj = Object.entries(copy)
       .reduce((acc, [key, value]) => {
         if (!isNode(value)) {
           let result = acc;
@@ -46,7 +47,8 @@ const iter = (data, depth) => {
     }
   };
 
-  const diff = data.reduce((acc, key) => {
+  const copyData = [...data];
+  const diff = copyData.reduce((acc, key) => {
     if (key.type === 'nested') {
       let result = acc;
       result += mapping(key, key.children, depth, '  ', 'nested');
