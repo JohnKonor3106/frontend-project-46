@@ -24,7 +24,7 @@ test('getting diff json files', () => {
   const result = readFile(getFixturePath('result.diff.txt'));
   const resultDiff = genDiff(file1, file2);
 
-  expect(resultDiff).toEqual(result);
+  expect(resultDiff).toBe(result);
 });
 
 test('getting diff yaml files', () => {
@@ -37,8 +37,8 @@ test('getting diff yaml files', () => {
   const resultExpect1 = genDiff(fileForExpect1, fileForExpect2);
   const resultExpect2 = genDiff(fileForExpect3, fileForExpect4);
 
-  expect(resultExpect1).toEqual(result);
-  expect(resultExpect2).toEqual(result);
+  expect(resultExpect1).toBe(result);
+  expect(resultExpect2).toBe(result);
 });
 
 test('invalid parameters', () => {
@@ -56,7 +56,7 @@ test('comparison of nested values', () => {
   const result = readFile(getFixturePath('result.diff.txt'));
   const resultDiff = genDiff(file1, file2);
 
-  expect(resultDiff).toEqual(result);
+  expect(resultDiff).toBe(result);
 });
 
 test('should throw an error', () => {
@@ -73,7 +73,7 @@ test('should incorrect format', () => {
   const trueOutput = readFile(getFixturePath('result.diff.txt'));
   const resultDiff = genDiff(file1, file2, 'stylish');
 
-  expect(resultDiff).toEqual(trueOutput);
+  expect(resultDiff).toBe(trueOutput);
 });
 
 test('should plain format', () => {
@@ -81,7 +81,7 @@ test('should plain format', () => {
   const file2 = getFixturePath('file2.json');
   const trueOutput = readFile(getFixturePath('result.plain.txt'));
   const resultDiff = genDiff(file1, file2, 'plain');
-  expect(resultDiff).toEqual(trueOutput);
+  expect(resultDiff).toBe(trueOutput);
 });
 
 test('should json format', () => {
