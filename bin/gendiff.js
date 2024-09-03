@@ -17,4 +17,4 @@ program
     return console.log(result);
   });
 
-program.parse();
+program.parse(process.argv);
