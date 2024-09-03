@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import genDiff from '../src/index.js';
 
-const program = new Command;
+const program = new Command();
 
 program
   .name('string-util')
@@ -12,9 +12,9 @@ program
   .option('-f, --format [type]', 'output format', 'stylish')
   .arguments('<file1path1> <file1path2>')
   .action((filepath1, filepath2) => {
-    const format = program.opts().format
+    const { format } = program.opts();
     const result = genDiff(filepath1, filepath2, format);
-    return console.log(result);
+    console.log(result);
   });
 
 program.parse();

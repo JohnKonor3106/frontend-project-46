@@ -4,7 +4,7 @@
   "description": "[![Actions Status](https://github.com/JohnKonor3106/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/JohnKonor3106/frontend-project-46/actions)",
   "main": "src/index.js",
   "bin": {
-    "code": "bin/gendiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "scripts": {
     "test": "npx jest ",
