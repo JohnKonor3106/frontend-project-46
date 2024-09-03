@@ -1,7 +1,8 @@
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { expect, test } from '@jest/globals';
-import { genDiff, readFile } from '../src/index.js';
+import genDiff from '../src/index.js';
+import * as utils from '../src/utils.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,7 +22,7 @@ test('getting diff json files', () => {
   const file1 = getFixturePath('file1.json');
   const file2 = getFixturePath('file2.json');
 
-  const result = readFile(getFixturePath('result.diff.txt'));
+  const result = utils.readFile(getFixturePath('result.diff.txt'));
   const resultDiff = genDiff(file1, file2);
 
   expect(resultDiff).toBe(result);
@@ -33,7 +34,7 @@ test('getting diff yaml files', () => {
   const fileForExpect3 = getFixturePath('file1.yml');
   const fileForExpect4 = getFixturePath('file2.yml');
 
-  const result = readFile(getFixturePath('result.diff.txt'));
+  const result = utils.readFile(getFixturePath('result.diff.txt'));
   const resultExpect1 = genDiff(fileForExpect1, fileForExpect2);
   const resultExpect2 = genDiff(fileForExpect3, fileForExpect4);
 
@@ -53,7 +54,7 @@ test('comparison of nested values', () => {
   const file1 = getFixturePath('file1.json');
   const file2 = getFixturePath('file2.json');
 
-  const result = readFile(getFixturePath('result.diff.txt'));
+  const result = utils.readFile(getFixturePath('result.diff.txt'));
   const resultDiff = genDiff(file1, file2);
 
   expect(resultDiff).toBe(result);
@@ -70,7 +71,7 @@ test('should throw an error', () => {
 test('should incorrect format', () => {
   const file1 = getFixturePath('file1.json');
   const file2 = getFixturePath('file2.json');
-  const trueOutput = readFile(getFixturePath('result.diff.txt'));
+  const trueOutput = utils.readFile(getFixturePath('result.diff.txt'));
   const resultDiff = genDiff(file1, file2, 'stylish');
 
   expect(resultDiff).toBe(trueOutput);
@@ -79,7 +80,7 @@ test('should incorrect format', () => {
 test('should plain format', () => {
   const file1 = getFixturePath('file1.json');
   const file2 = getFixturePath('file2.json');
-  const trueOutput = readFile(getFixturePath('result.plain.txt'));
+  const trueOutput = utils.readFile(getFixturePath('result.plain.txt'));
   const resultDiff = genDiff(file1, file2, 'plain');
   expect(resultDiff).toBe(trueOutput);
 });

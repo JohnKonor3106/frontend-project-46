@@ -1,21 +1,11 @@
-import { cwd } from 'node:process';
-import { resolve } from 'node:path';
-import { readFileSync } from 'node:fs';
 import getTree from './formatter/bildTree.js';
 import parse from './parses/parse.js';
 import getformat from './formatter/format.js';
-
-const readFile = (fileName) => (readFileSync(fileName, 'utf-8'));
-
-const getPath = (path) => {
-  const pathFile = resolve(cwd(), '__fixtures__', path);
-
-  return pathFile;
-};
+import * as utils from '../src/utils.js'
 
 const genDiff = (data1, data2, format = 'stylish') => {
-  const path1 = getPath(data1);
-  const path2 = getPath(data2);
+  const path1 = utils.getPath(data1);
+  const path2 = utils.getPath(data2);
 
   const dataParse1 = parse(path1);
   const dataParse2 = parse(path2);
@@ -25,8 +15,9 @@ const genDiff = (data1, data2, format = 'stylish') => {
   }
 
   const tree = getTree(dataParse1, dataParse2);
+  const result = getformat(tree, format);
 
-  return getformat(tree, format);
+  return result
 };
 
-export { genDiff, getPath, readFile };
+export default genDiff;
