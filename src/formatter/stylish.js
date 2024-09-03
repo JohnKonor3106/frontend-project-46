@@ -42,7 +42,7 @@ const iter = (data, depth) => {
         return `${indent(newDepth)}${symblol}${key.key}: {${iter(value, newDepth + 1)}${brackets(newDepth)}}\n`;
 
       default:
-        return '';
+        return null;
     }
   };
 

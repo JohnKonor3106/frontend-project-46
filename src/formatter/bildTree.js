@@ -1,9 +1,6 @@
 import _ from 'lodash';
 
 const getTree = (data1, data2) => {
-  if (typeof data1 !== 'object' || typeof data2 !== 'object') {
-    throw new Error('Data must be an object');
-  }
 
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);

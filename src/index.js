@@ -25,6 +25,7 @@ const genDiff = (data1, data2, format = 'stylish') => {
   }
 
   const tree = getTree(dataParse1, dataParse2);
+  
   return getformat(tree, format);
 };
 

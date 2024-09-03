@@ -1,5 +1,6 @@
 import stylish from './stylish.js';
 import plain from './plain.js';
+import genJson from './json.js';
 
 const getformat = (tree, format) => {
   switch (format) {
@@ -7,8 +8,10 @@ const getformat = (tree, format) => {
       return stylish(tree);
     case 'plain':
       return plain(tree);
+    case 'json': 
+      return genJson(tree);
     default:
-      throw new Error('This format is not supported.Please specify the correct format');
+      return 'Error!'
   }
 };
 
