@@ -2,9 +2,19 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { expect, test } from '@jest/globals';
 import { genDiff, readFile } from '../src/index.js';
+import exp from 'constants';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+function isValidJSON(string) {
+  try {
+      JSON.parse(string);
+      return true; // Строка является корректным JSON
+  } catch (error) {
+      return false; // Строка не является корректным JSON
+  }
+}
 
 const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
 
@@ -18,19 +28,19 @@ test('getting diff json files', () => {
   expect(resultDiff).toEqual(result);
 });
 
-// test('getting diff yaml files', () => {
-//   const fileForExpect1 = getFixturePath('file1.yaml');
-//   const fileForExpect2 = getFixturePath('file2.yaml');
-//   const fileForExpect3 = getFixturePath('file1.yml');
-//   const fileForExpect4 = getFixturePath('file2.yml');
+test('getting diff yaml files', () => {
+  const fileForExpect1 = getFixturePath('file1.yaml');
+  const fileForExpect2 = getFixturePath('file2.yaml');
+  const fileForExpect3 = getFixturePath('file1.yml');
+  const fileForExpect4 = getFixturePath('file2.yml');
 
-//   const result = readFile(getFixturePath('result.diff.txt'));
-//   const resultExpect1 = genDiff(fileForExpect1, fileForExpect2);
-//   const resultExpect2 = genDiff(fileForExpect3, fileForExpect4);
+  const result = readFile(getFixturePath('result.diff.txt'));
+  const resultExpect1 = genDiff(fileForExpect1, fileForExpect2);
+  const resultExpect2 = genDiff(fileForExpect3, fileForExpect4);
 
-//   expect(resultExpect1).toEqual(result);
-//   expect(resultExpect2).toEqual(result);
-// });
+  expect(resultExpect1).toEqual(result);
+  expect(resultExpect2).toEqual(result);
+});
 
 test('invalid parameters', () => {
   const resultExpect1 = genDiff('', '');
@@ -48,16 +58,16 @@ test('comparison of nested values', () => {
   const resultDiff = genDiff(file1, file2);
 
   expect(resultDiff).toEqual(result);
+
 });
 
-// test('should throw an error', () => {
-//   const str1 = 1;
-//   const str2 = 2;
+test('should throw an error', () => {
+  const file1 = getFixturePath('file1.json');
+  const file2 = getFixturePath('file2.json');
+  const result = genDiff(file1, file2, 'txt');
 
-//   const result = getTree(str1, str2);
-//   console.log(result);
-//   expect(result).toThrow('Data must be an object');
-// });
+  expect(result).toBe('Error!');
+});
 
 test('should incorrect format', () => {
   const file1 = getFixturePath('file1.json');
@@ -75,3 +85,14 @@ test('should plain format', () => {
   const resultDiff = genDiff(file1, file2, 'plain');
   expect(resultDiff).toEqual(trueOutput);
 });
+
+test('should json format', () => {
+  const file1 = getFixturePath('file1.json');
+  const file2 = getFixturePath('file2.json');
+
+  const jsonFormat = genDiff(file1, file2, 'json');
+  const resultJson = isValidJSON(jsonFormat);
+
+  expect(resultJson).toBe(true)
+
+})
