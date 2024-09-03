@@ -2,17 +2,16 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { expect, test } from '@jest/globals';
 import { genDiff, readFile } from '../src/index.js';
-import exp from 'constants';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 function isValidJSON(string) {
   try {
-      JSON.parse(string);
-      return true; // Строка является корректным JSON
+    JSON.parse(string);
+    return true; // Строка является корректным JSON
   } catch (error) {
-      return false; // Строка не является корректным JSON
+    return false; // Строка не является корректным JSON
   }
 }
 
@@ -58,7 +57,6 @@ test('comparison of nested values', () => {
   const resultDiff = genDiff(file1, file2);
 
   expect(resultDiff).toEqual(result);
-
 });
 
 test('should throw an error', () => {
@@ -93,6 +91,5 @@ test('should json format', () => {
   const jsonFormat = genDiff(file1, file2, 'json');
   const resultJson = isValidJSON(jsonFormat);
 
-  expect(resultJson).toBe(true)
-
-})
+  expect(resultJson).toBe(true);
+});

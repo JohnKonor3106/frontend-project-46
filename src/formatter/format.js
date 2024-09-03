@@ -8,10 +8,10 @@ const getformat = (tree, format) => {
       return stylish(tree);
     case 'plain':
       return plain(tree);
-    case 'json': 
+    case 'json':
       return genJson(tree);
     default:
-      return 'Error!'
+      return 'Error!';
   }
 };
 
