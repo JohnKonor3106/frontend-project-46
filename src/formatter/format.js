@@ -11,7 +11,7 @@ const getformat = (tree, format) => {
     case 'json':
       return genJson(tree);
     default:
-      return 'Error!';
+      return '';
   }
 };
 

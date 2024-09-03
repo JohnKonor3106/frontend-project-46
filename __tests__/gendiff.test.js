@@ -65,7 +65,7 @@ test('should throw an error', () => {
   const file2 = getFixturePath('file2.json');
   const result = genDiff(file1, file2, 'txt');
 
-  expect(result).toBe('Error!');
+  expect(result).toBe('');
 });
 
 test('should incorrect format', () => {
