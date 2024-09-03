@@ -11,7 +11,7 @@ program
   .arguments('<file1path1> <file1path2>')
   .action((filepath1, filepath2) => {
     const result = utils.genDiff(filepath1, filepath2, program.opts().format);
-    console.log(result);
+    return console.log(result);
   });
 
 program.parse();
