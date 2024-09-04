@@ -11,7 +11,7 @@ const iter = (data, depth) => {
   const brackets = (newDepth, space = 4) => ' '.repeat((newDepth * space - 2) + 2);
 
   const getNestedObject = (obj, newIdent) => {
-    const copy = {...obj}
+    const copy = structuredClone(obj);
     const newObj = Object.entries(copy)
       .reduce((acc, [key, value]) => {
         if (!isNode(value)) {
@@ -47,7 +47,7 @@ const iter = (data, depth) => {
     }
   };
 
-  const copyData = [...data];
+  const copyData = structuredClone(data);
   const diff = copyData.reduce((acc, key) => {
     if (key.type === 'nested') {
       let result = acc;
