@@ -1,5 +1,5 @@
 const iter = (data, parentKey = '') => {
-  const isBoolean = (value) => {
+  const checkTypeData = (value) => {
     if (value === null) {
       return value;
     }
@@ -19,15 +19,15 @@ const iter = (data, parentKey = '') => {
 
     switch (key.type) {
       case 'added':
-        return `${acc}Property '${currentKey}' was added with value: ${isBoolean(key.value)}\n`;
+        return `${acc}Property '${currentKey}' was added with value: ${checkTypeData(key.value)}\n`;
       case 'deleted':
         return `${acc}Property '${currentKey}' was removed\n`;
       case 'changed':
-        return `${acc}Property '${currentKey}' was updated. From ${isBoolean(key.value1)} to ${isBoolean(key.value2)}\n`;
+        return `${acc}Property '${currentKey}' was updated. From ${checkTypeData(key.value1)} to ${checkTypeData(key.value2)}\n`;
       case 'nested':
         return `${acc}${iter(key.children, `${currentKey}.`)}`;
       default:
-        return acc; // No changes for unrecognized types
+        return acc;
     }
   }, '');
 };
