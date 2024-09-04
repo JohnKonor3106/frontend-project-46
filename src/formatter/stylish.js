@@ -12,20 +12,13 @@ const iter = (data, depth) => {
 
   const getNestedObject = (obj, newIdent) => {
     const copy = structuredClone(obj);
-    const newObj = Object.entries(copy)
+    return Object.entries(copy)
       .reduce((acc, [key, value]) => {
-        if (!isNode(value)) {
-          let result = acc;
-          result += `${indent(newIdent)}  ${key}: ${value}\n`;
-          return result;
-        }
-
-        let result = acc;
-        result += `${indent(newIdent)}  ${key}: ${getNestedObject(value, newIdent + 1)}${brackets(newIdent)}}\n`;
-        return result;
+        const result = !isNode(value)
+          ? `${indent(newIdent)}  ${key}: ${value}\n`
+          : `${indent(newIdent)}  ${key}: ${getNestedObject(value, newIdent + 1)}${brackets(newIdent)}}\n`;
+        return acc + result;
       }, '{\n');
-
-    return newObj;
   };
 
   const mapping = (key, value, newDepth, symblol, mark) => {
@@ -34,10 +27,9 @@ const iter = (data, depth) => {
       case 'deleted':
       case 'changed':
       case 'unchanged':
-        if (!isNode(value)) {
-          return `${indent(newDepth)}${symblol} ${key}: ${value}\n`;
-        }
-        return `${indent(newDepth)}${symblol} ${key}: ${getNestedObject(value, newDepth + 1)}${brackets(newDepth)}}\n`;
+        return !isNode(value)
+          ? `${indent(newDepth)}${symblol} ${key}: ${value}\n`
+          : `${indent(newDepth)}${symblol} ${key}: ${getNestedObject(value, newDepth + 1)}${brackets(newDepth)}}\n`;
 
       case 'nested':
         return `${indent(newDepth)}${symblol}${key.key}: {${iter(value, newDepth + 1)}${brackets(newDepth)}}\n`;
@@ -48,43 +40,30 @@ const iter = (data, depth) => {
   };
 
   const copyData = structuredClone(data);
-  const diff = copyData.reduce((acc, key) => {
+  return `\n${copyData.reduce((acc, key) => {
     if (key.type === 'nested') {
-      let result = acc;
-      result += mapping(key, key.children, depth, '  ', 'nested');
-      return result;
+      return acc + mapping(key, key.children, depth, '  ', 'nested');
     }
 
     if (key.type === 'added') {
-      let result = acc;
-      result += mapping(key.key, key.value, depth, '+', 'added');
-      return result;
+      return acc + mapping(key.key, key.value, depth, '+', 'added');
     }
 
     if (key.type === 'deleted') {
-      let result = acc;
-      result += mapping(key.key, key.value, depth, '-', 'deleted');
-      return result;
+      return acc + mapping(key.key, key.value, depth, '-', 'deleted');
     }
 
     if (key.type === 'changed') {
-      let result = acc;
-      result += mapping(key.key, key.value1, depth, '-', 'changed');
-      result += mapping(key.key, key.value2, depth, '+', 'changed');
-
-      return result;
+      return acc + mapping(key.key, key.value1, depth, '-', 'changed')
+        + mapping(key.key, key.value2, depth, '+', 'changed');
     }
 
     if (key.type === 'unchanged') {
-      let result = acc;
-      result += mapping(key.key, key.value, depth, ' ', 'unchanged');
-      return result;
+      return acc + mapping(key.key, key.value, depth, ' ', 'unchanged');
     }
-    const result = acc;
-    return result;
-  }, '');
 
-  return `\n${diff}`;
+    return acc;
+  }, '')}`;
 };
 
 const getDifftree = (ast, depth = 1) => `{${iter(ast, depth)}}`;
